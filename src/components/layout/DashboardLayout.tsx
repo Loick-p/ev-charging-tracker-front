@@ -4,8 +4,11 @@ import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/s
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { AppSidebar } from "@/components/layout/AppSidebar.tsx"
+import {usePageName} from "@/hooks/usPageName.ts";
 
 export const DashboardLayout = () => {
+    const pageName = usePageName()
+
     return (
         <>
             <SidebarProvider>
@@ -19,7 +22,7 @@ export const DashboardLayout = () => {
                                 orientation="vertical"
                                 className="mx-2 data-[orientation=vertical]:h-4"
                             />
-                            <h1 className="text-base font-medium">Page title</h1>
+                            <h1 className="text-base font-medium">{ pageName }</h1>
 
                             <div className="ml-auto flex items-center gap-2">
                                 <Avatar>
