@@ -15,7 +15,7 @@ import { Car, EvCharger, Home, LogOut, PlugZap, Settings, Zap } from "lucide-rea
 const items = [
     {
         title: "Dashboard",
-        url: "#",
+        url: "/",
         icon: Home,
     },
     {
@@ -25,7 +25,7 @@ const items = [
     },
     {
         title: "Cars",
-        url: "#",
+        url: "cars",
         icon: Car,
     },
     {

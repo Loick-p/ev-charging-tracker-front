@@ -3,8 +3,9 @@ import { createBrowserRouter } from 'react-router'
 // Layouts
 import { DashboardLayout } from '@/components/layout/DashboardLayout'
 
-// Dashboard
+// Pages
 import { Dashboard } from '@/pages/Dashboard'
+import { Cars } from "@/pages/Cars.tsx"
 
 export const router = createBrowserRouter([
     {
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <Dashboard />,
+            },
+            {
+                path: 'cars',
+                element: <Cars />,
             },
         ],
     },
