@@ -86,7 +86,7 @@ export const Chargings = () => {
                                 <TableCell>
                                     <div className="flex items-center">
                                         <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
-                                        <span>2025-10-09</span>
+                                        <span>09/10/2025</span>
                                     </div>
                                 </TableCell>
                                 <TableCell>
