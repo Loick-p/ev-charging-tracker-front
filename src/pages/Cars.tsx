@@ -1,3 +1,10 @@
+import { useState } from "react"
+
+// Components
+import { CarFormModal } from "@/components/cars/CarFormModal.tsx"
+import { DeleteModal } from "@/components/modals/DeleteModal.tsx"
+
+// UI
 import { Button } from "@/components/ui/button"
 import {
     Table,
@@ -27,11 +34,13 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 
-import { CarFormModal } from "@/components/cars/CarFormModal.tsx"
+// Icons
 import { BatteryCharging, Calendar, EllipsisVertical, Milestone, Plus } from "lucide-react"
-import {DeleteCarModal} from "@/components/cars/DeleteCarModal.tsx";
 
 export const Cars = () => {
+    const [editModalOpen, setEditModalOpen] = useState(false)
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+
     return (
         <>
             <div className="p-2 lg:p-4">
@@ -83,29 +92,25 @@ export const Cars = () => {
                                     </div>
                                 </TableCell>
                                 <TableCell className="text-right">
-                                    <Dialog>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger>
-                                                <Button
-                                                    variant="ghost"
-                                                    className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-                                                >
-                                                    <EllipsisVertical />
-                                                    <span className="sr-only">Open menu</span>
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent>
-                                                <DropdownMenuItem>Edit</DropdownMenuItem>
-                                                <DialogTrigger asChild>
-                                                    <DropdownMenuItem variant="destructive">
-                                                        Delete
-                                                    </DropdownMenuItem>
-                                                </DialogTrigger>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-
-                                        <DeleteCarModal />
-                                    </Dialog>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger>
+                                            <Button
+                                                variant="ghost"
+                                                className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                                            >
+                                                <EllipsisVertical />
+                                                <span className="sr-only">Open menu</span>
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent>
+                                            <DropdownMenuItem onClick={() => setEditModalOpen(true)}>
+                                                Edit
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem variant="destructive" onClick={() => setDeleteModalOpen(true)}>
+                                                Delete
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
@@ -139,6 +144,21 @@ export const Cars = () => {
                     </PaginationContent>
                 </Pagination>
             </div>
+
+            <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
+                <CarFormModal />
+            </Dialog>
+
+            <Dialog open={deleteModalOpen} onOpenChange={setDeleteModalOpen}>
+                <DeleteModal
+                    title="Delete this car ?"
+                    description="Are you sure you want to delete this car? This action cannot be undone."
+                    onDelete={() => {
+                        setDeleteModalOpen(false)
+                    }}
+                    deleteButtonText="Delete Car"
+                />
+            </Dialog>
         </>
     )
 }
