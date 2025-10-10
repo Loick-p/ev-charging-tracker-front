@@ -20,7 +20,7 @@ const items = [
     },
     {
         title: "Chargings",
-        url: "#",
+        url: "chargings",
         icon: PlugZap,
     },
     {
@@ -30,7 +30,7 @@ const items = [
     },
     {
         title: "Stations",
-        url: "#",
+        url: "stations",
         icon: EvCharger,
     },
 ]

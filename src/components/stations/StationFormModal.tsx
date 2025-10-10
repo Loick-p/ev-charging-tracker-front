@@ -16,60 +16,49 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export const CarFormModal = () => {
+export const StationFormModal = () => {
     return (
         <>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Add new car</DialogTitle>
+                    <DialogTitle>Add new station</DialogTitle>
                     <DialogDescription>
-                        Fill the information of your car.
+                        Fill the information of your charging station.
                     </DialogDescription>
                 </DialogHeader>
 
                 <div className="grid gap-4">
                     <div className="grid gap-3">
-                        <Label htmlFor="brand_name" className="flex gap-1">
-                            Brand name
+                        <Label htmlFor="name" className="flex gap-1">
+                            Name
                             <span className="text-red-500">*</span>
                         </Label>
-                        <Input id="brand_name" name="brand_name" placeholder="Tesla" required />
+                        <Input id="name" name="name" placeholder="Home Charger" required />
                     </div>
                     <div className="grid gap-3">
-                        <Label htmlFor="model" className="flex gap-1">
-                            Model
-                            <span className="text-red-500">*</span>
-                        </Label>
-                        <Input id="model" name="model" placeholder="Model Y" required />
-                    </div>
-                    <div className="grid gap-3">
-                        <Label htmlFor="year" className="flex gap-1">
-                            Year
-                            <span className="text-red-500">*</span>
-                        </Label>
-                        <Input id="year" name="year" type="number" min="2000" placeholder="2025" required />
-                    </div>
-                    <div className="grid gap-3">
-                        <Label htmlFor="range" className="flex gap-1">
-                            Range
+                        <Label htmlFor="output_power" className="flex gap-1">
+                            Output power
                             <span className="text-red-500">*</span>
                         </Label>
                         <InputGroup>
-                            <InputGroupInput id="range" name="range" type="number" min="1" placeholder="545" required />
+                            <InputGroupInput id="output_power" name="output_power" type="number" min="0.1" step="0.1" placeholder="7.4" required />
                             <InputGroupAddon align="inline-end">
-                                <InputGroupText>km</InputGroupText>
+                                <InputGroupText>kW</InputGroupText>
                             </InputGroupAddon>
                         </InputGroup>
                     </div>
                     <div className="grid gap-3">
-                        <Label htmlFor="battery_capacity" className="flex gap-1">
-                            Battery capacity
+                        <Label htmlFor="electricity_price" className="flex gap-1">
+                            Electricity price
                             <span className="text-red-500">*</span>
                         </Label>
                         <InputGroup>
-                            <InputGroupInput id="battery_capacity" name="battery_capacity" type="number" min="1" placeholder="78" required />
+                            <InputGroupAddon align="inline-start">
+                                <InputGroupText>€</InputGroupText>
+                            </InputGroupAddon>
+                            <InputGroupInput id="electricity_price" name="electricity_price" type="number" min="0.01" step="0.01" placeholder="0.25" required />
                             <InputGroupAddon align="inline-end">
-                                <InputGroupText>kWh</InputGroupText>
+                                <InputGroupText>/kWh</InputGroupText>
                             </InputGroupAddon>
                         </InputGroup>
                     </div>
