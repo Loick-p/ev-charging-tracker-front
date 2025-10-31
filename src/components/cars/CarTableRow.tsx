@@ -2,6 +2,7 @@ import { useState } from "react"
 
 // Components
 import { CarFormModal } from "@/components/cars/CarFormModal.tsx"
+import { DeleteModal } from "@/components/modals/DeleteModal.tsx"
 
 // UI
 import { Button } from "@/components/ui/button"
@@ -26,6 +27,7 @@ interface CarTableRowProps {
 
 export const CarTableRow = ({ car }: CarTableRowProps) => {
     const [editModalOpen, setEditModalOpen] = useState(false)
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
 
     return (
         <>
@@ -65,7 +67,7 @@ export const CarTableRow = ({ car }: CarTableRowProps) => {
                             <DropdownMenuItem onClick={() => setEditModalOpen(true)}>
                                 Edit
                             </DropdownMenuItem>
-                            <DropdownMenuItem variant="destructive">
+                            <DropdownMenuItem variant="destructive" onClick={() => setDeleteModalOpen(true)}>
                                 Delete
                             </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -79,6 +81,17 @@ export const CarTableRow = ({ car }: CarTableRowProps) => {
                     onSubmit={() => {
                         setEditModalOpen(false)
                     }}
+                />
+            </Dialog>
+
+            <Dialog open={deleteModalOpen} onOpenChange={setDeleteModalOpen}>
+                <DeleteModal
+                    title="Delete this car ?"
+                    description={`Are you sure you want to delete your ${car.brand} ${car.model}? This action cannot be undone.`}
+                    onDelete={() => {
+                        setDeleteModalOpen(false)
+                    }}
+                    deleteButtonText="Delete Car"
                 />
             </Dialog>
         </>
