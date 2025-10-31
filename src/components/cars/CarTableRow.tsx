@@ -1,3 +1,8 @@
+import { useState } from "react"
+
+// Components
+import { CarFormModal } from "@/components/cars/CarFormModal.tsx"
+
 // UI
 import { Button } from "@/components/ui/button"
 import { TableCell, TableRow } from "@/components/ui/table"
@@ -7,6 +12,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Dialog } from "@/components/ui/dialog"
 
 // Icons
 import { BatteryCharging, Calendar, EllipsisVertical, Milestone } from "lucide-react"
@@ -19,6 +25,8 @@ interface CarTableRowProps {
 }
 
 export const CarTableRow = ({ car }: CarTableRowProps) => {
+    const [editModalOpen, setEditModalOpen] = useState(false)
+
     return (
         <>
             <TableRow className="h-14 text-md">
@@ -54,7 +62,7 @@ export const CarTableRow = ({ car }: CarTableRowProps) => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setEditModalOpen(true)}>
                                 Edit
                             </DropdownMenuItem>
                             <DropdownMenuItem variant="destructive">
@@ -64,6 +72,15 @@ export const CarTableRow = ({ car }: CarTableRowProps) => {
                     </DropdownMenu>
                 </TableCell>
             </TableRow>
+
+            <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
+                <CarFormModal
+                    car={car}
+                    onSubmit={() => {
+                        setEditModalOpen(false)
+                    }}
+                />
+            </Dialog>
         </>
     )
 }
