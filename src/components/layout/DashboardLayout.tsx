@@ -4,7 +4,7 @@ import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/s
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { AppSidebar } from "@/components/layout/AppSidebar.tsx"
-import {usePageName} from "@/hooks/usPageName.ts";
+import { usePageName } from "@/hooks/usePageName.ts"
 
 export const DashboardLayout = () => {
     const pageName = usePageName()
