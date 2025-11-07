@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 // Components
-import { CarFormModal } from "@/components/cars/CarFormModal.tsx"
+import { EditCarModal } from "@/components/cars/EditCarModal.tsx"
 import { DeleteModal } from "@/components/modals/DeleteModal.tsx"
 
 // UI
@@ -19,7 +19,7 @@ import { Dialog } from "@/components/ui/dialog"
 import { BatteryCharging, Calendar, EllipsisVertical, Milestone } from "lucide-react"
 
 // Types
-import type { Car } from "@/types/car"
+import type { Car } from "@/validations/car"
 
 interface CarTableRowProps {
     car: Car
@@ -76,11 +76,10 @@ export const CarTableRow = ({ car }: CarTableRowProps) => {
             </TableRow>
 
             <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
-                <CarFormModal
+                <EditCarModal
                     car={car}
-                    onSubmit={() => {
-                        setEditModalOpen(false)
-                    }}
+                    isOpen={editModalOpen}
+                    onClose={() => setEditModalOpen(false)}
                 />
             </Dialog>
 

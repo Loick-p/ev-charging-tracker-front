@@ -26,8 +26,22 @@ export const useCars = () => {
         },
     })
 
+    const updateCarMutation = useMutation({
+        mutationFn: ({ id, car }: { id: number; car: CarForm }) => carService.update(id, car),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['cars'] })
+        },
+        onError: (error) => {
+            console.error('Error updating car:', error)
+        },
+    })
+
     const createCar = async (car: CarForm) => {
         return await createCarMutation.mutateAsync(car)
+    }
+
+    const updateCar = async (id: number, car: CarForm) => {
+        return await updateCarMutation.mutateAsync({ id, car })
     }
 
     return {
@@ -36,6 +50,8 @@ export const useCars = () => {
         isError,
         error,
         createCar,
+        updateCar,
         isCreating: createCarMutation.isPending,
+        isUpdating: updateCarMutation.isPending,
     }
 }
