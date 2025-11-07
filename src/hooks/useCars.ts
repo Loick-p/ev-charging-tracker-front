@@ -1,10 +1,13 @@
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query"
 import { carService } from "@/services/carService"
+import type { CarForm } from "@/validations/car.ts"
 
 export const useCars = () => {
+    const queryClient = useQueryClient()
+
     const {
         data: cars = [],
-        isLoading,
+        isPending,
         isError,
         error
     } = useQuery({
@@ -13,10 +16,26 @@ export const useCars = () => {
         select: (data) => data || []
     })
 
+    const createCarMutation = useMutation({
+        mutationFn: (car: CarForm) => carService.create(car),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['cars'] })
+        },
+        onError: (error) => {
+            console.error('Error creating car:', error)
+        },
+    })
+
+    const createCar = async (car: CarForm) => {
+        return await createCarMutation.mutateAsync(car)
+    }
+
     return {
         cars,
-        isLoading,
+        isPending,
         isError,
         error,
+        createCar,
+        isCreating: createCarMutation.isPending,
     }
 }

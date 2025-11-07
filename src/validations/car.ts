@@ -1,7 +1,6 @@
 import { z } from 'zod'
 
-export const carSchema = z.object({
-    id: z.number(),
+const carBaseSchema = z.object({
     brand: z
         .string()
         .min(1, 'Brand is required')
@@ -13,17 +12,23 @@ export const carSchema = z.object({
     year: z
         .number()
         .int('Year must be an integer')
-        .min(2000, 'Year must be after 2000')
-        .max(new Date().getFullYear() + 1, 'Year cannot be in the distant future'),
+        .gte(2000, 'Year must be after 2000')
+        .lte(new Date().getFullYear() + 1, 'Year cannot be in the distant future'),
     range: z
         .number()
         .int('Range must be an integer')
-        .min(1, 'Range must be at least 1 km'),
+        .gte(1, 'Range must be at least 1 km')
+        .lte(2000, 'Range must be less than or equal to 2000 km'),
     batteryCapacity: z
         .number()
-        .min(1, 'Battery capacity must be at least 1 kWh')
+        .gte(1, 'Battery capacity must be at least 1 kWh')
+        .lte(500, 'Battery capacity must be less than or equal to 500 kWh')
 })
 
-export const createCarSchema = carSchema.omit({ id: true })
+export const carFormSchema = carBaseSchema
+export const carSchema = carBaseSchema.extend({
+    id: z.number()
+})
 
 export type Car = z.infer<typeof carSchema>
+export type CarForm = z.infer<typeof carFormSchema>

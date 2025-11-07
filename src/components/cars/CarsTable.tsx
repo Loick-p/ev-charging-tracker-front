@@ -16,10 +16,10 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useCars } from "@/hooks/useCars"
 
 // Types
-import type { Car } from "@/types/car"
+import type { Car } from "@/validations/car"
 
 export const CarsTable = () => {
-    const { cars, isLoading, isError } = useCars();
+    const { cars, isPending, isError } = useCars();
 
     return (
         <>
@@ -36,7 +36,7 @@ export const CarsTable = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {isLoading ? (
+                        {isPending ? (
                             Array.from({ length: 5 }).map((_, index) => (
                                 <TableRow className="h-14" key={index}>
                                     <TableCell><Skeleton className="h-4 w-20" /></TableCell>

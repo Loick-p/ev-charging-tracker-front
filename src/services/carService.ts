@@ -1,5 +1,5 @@
 import axiosInstance from "@/lib/axios"
-import type { Car } from "@/types/car"
+import type {Car, CarForm} from "@/validations/car"
 
 export const carService = {
     getAll: async (): Promise<Car[]> => {
@@ -7,4 +7,8 @@ export const carService = {
 
         return response.data
     },
+    create: async (car: CarForm): Promise<Car> => {
+        const response = await axiosInstance.post('cars', car)
+        return response.data
+    }
 }
