@@ -13,5 +13,8 @@ export const carService = {
     update: async (id: number, car: CarForm): Promise<Car> => {
         const response = await axiosInstance.patch(`cars/${id}`, car)
         return response.data
+    },
+    delete: async (id: number): Promise<void> => {
+        await axiosInstance.delete(`cars/${id}`)
     }
 }

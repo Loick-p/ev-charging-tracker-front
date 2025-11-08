@@ -18,6 +18,9 @@ import { Dialog } from "@/components/ui/dialog"
 // Icons
 import { BatteryCharging, Calendar, EllipsisVertical, Milestone } from "lucide-react"
 
+// Hooks
+import { useCars } from "@/hooks/useCars"
+
 // Types
 import type { Car } from "@/validations/car"
 
@@ -28,6 +31,7 @@ interface CarTableRowProps {
 export const CarTableRow = ({ car }: CarTableRowProps) => {
     const [editModalOpen, setEditModalOpen] = useState(false)
     const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+    const { deleteCar, isDeleting } = useCars()
 
     return (
         <>
@@ -87,10 +91,15 @@ export const CarTableRow = ({ car }: CarTableRowProps) => {
                 <DeleteModal
                     title="Delete this car ?"
                     description={`Are you sure you want to delete your ${car.brand} ${car.model}? This action cannot be undone.`}
-                    onDelete={() => {
-                        setDeleteModalOpen(false)
+                    onDelete={async () => {
+                        try {
+                            await deleteCar(car.id)
+                            setDeleteModalOpen(false)
+                        } catch (error) {
+                            console.error('Failed to delete car:', error)
+                        }
                     }}
-                    deleteButtonText="Delete Car"
+                    isLoading={isDeleting}
                 />
             </Dialog>
         </>

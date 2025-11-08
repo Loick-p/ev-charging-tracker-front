@@ -36,12 +36,26 @@ export const useCars = () => {
         },
     })
 
+    const deleteCarMutation = useMutation({
+        mutationFn: (id: number) => carService.delete(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['cars'] })
+        },
+        onError: (error) => {
+            console.error('Error deleting car:', error)
+        },
+    })
+
     const createCar = async (car: CarForm) => {
         return await createCarMutation.mutateAsync(car)
     }
 
     const updateCar = async (id: number, car: CarForm) => {
         return await updateCarMutation.mutateAsync({ id, car })
+    }
+
+    const deleteCar = async (id: number) => {
+        return await deleteCarMutation.mutateAsync(id)
     }
 
     return {
@@ -51,7 +65,9 @@ export const useCars = () => {
         error,
         createCar,
         updateCar,
+        deleteCar,
         isCreating: createCarMutation.isPending,
         isUpdating: updateCarMutation.isPending,
+        isDeleting: deleteCarMutation.isPending,
     }
 }
