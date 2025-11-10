@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group.tsx"
+import { toast } from "sonner"
 
 // Icons
 import { Plus } from "lucide-react"
@@ -33,7 +34,6 @@ export const AddCarModal = () => {
     const { createCar, isCreating } = useCars()
 
     const [addModalOpen, setAddModalOpen] = useState<boolean>(false)
-    const [errorMessage, setErrorMessage] = useState<string>('')
 
     const form = useForm({
         defaultValues: {
@@ -49,16 +49,17 @@ export const AddCarModal = () => {
         onSubmit: async ({ value }) => {
 
             try {
-                setErrorMessage('')
-
                 // TEMPORARY
                 //await createCar(value)
                 await createCar({ ...value, owner: "api/users/1"})
 
                 form.reset()
+                toast.success("Car has been created successfully.")
+
                 setAddModalOpen(false)
             } catch (error) {
-                setErrorMessage('An error occurred while adding the car. Please try again.')
+                toast.error('An error occurred while adding the car. Please try again.')
+
                 console.log(error)
             }
         },
@@ -71,7 +72,6 @@ export const AddCarModal = () => {
                 onOpenChange={(open) => {
                     setAddModalOpen(open)
                     if (!open) {
-                        setErrorMessage('')
                         form.reset()
                     }
                 }}
@@ -225,12 +225,6 @@ export const AddCarModal = () => {
                             />
                         </FieldGroup>
                     </form>
-
-                    {errorMessage && (
-                        <div className="text-sm text-destructive mb-2">
-                            {errorMessage}
-                        </div>
-                    )}
 
                     <DialogFooter>
                         <DialogClose asChild>

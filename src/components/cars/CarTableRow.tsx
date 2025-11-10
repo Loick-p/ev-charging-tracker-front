@@ -14,6 +14,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Dialog } from "@/components/ui/dialog"
+import { toast } from "sonner"
 
 // Icons
 import { BatteryCharging, Calendar, EllipsisVertical, Milestone } from "lucide-react"
@@ -94,9 +95,13 @@ export const CarTableRow = ({ car }: CarTableRowProps) => {
                     onDelete={async () => {
                         try {
                             await deleteCar(car.id)
+
+                            toast.success("Car has been deleted successfully.")
                             setDeleteModalOpen(false)
                         } catch (error) {
-                            console.error('Failed to delete car:', error)
+                            toast.error('An error occurred while deleting the car. Please try again.')
+
+                            console.error('Failed to delete car : ', error)
                         }
                     }}
                     isLoading={isDeleting}

@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { AppSidebar } from "@/components/layout/AppSidebar.tsx"
 import { usePageName } from "@/hooks/usePageName.ts"
+import { Toaster } from "@/components/ui/sonner"
 
 export const DashboardLayout = () => {
     const pageName = usePageName()
@@ -39,6 +40,8 @@ export const DashboardLayout = () => {
                     </div>
                 </SidebarInset>
             </SidebarProvider>
+
+            <Toaster richColors position="top-right" theme="light" />
         </>
     )
 }

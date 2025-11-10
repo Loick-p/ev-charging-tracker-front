@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useForm } from "@tanstack/react-form"
 import { useCars } from "@/hooks/useCars.ts"
 
@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group.tsx"
+import { toast } from "sonner"
 
 // Types
 import { type Car, carFormSchema } from "@/validations/car"
@@ -32,8 +33,6 @@ interface EditCarModalProps {
 
 export const EditCarModal = ({ car, isOpen, onClose }: EditCarModalProps) => {
     const { updateCar, isUpdating } = useCars()
-
-    const [errorMessage, setErrorMessage] = useState<string>('')
 
     const form = useForm({
         defaultValues: {
@@ -49,16 +48,17 @@ export const EditCarModal = ({ car, isOpen, onClose }: EditCarModalProps) => {
         onSubmit: async ({ value }) => {
 
             try {
-                setErrorMessage('')
-
                 // TEMPORARY
                 //await updateCar(car.id, value)
                 await updateCar(car.id, value)
 
                 form.reset()
+                toast.success("Car has been updated successfully.")
+
                 onClose()
             } catch (error) {
-                setErrorMessage('An error occurred while editing the car. Please try again.')
+                toast.error('An error occurred while editing the car. Please try again.')
+
                 console.log(error)
             }
         },
@@ -67,7 +67,6 @@ export const EditCarModal = ({ car, isOpen, onClose }: EditCarModalProps) => {
     useEffect(() => {
         if (!isOpen) {
             form.reset()
-            setErrorMessage('')
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen]);
@@ -216,12 +215,6 @@ export const EditCarModal = ({ car, isOpen, onClose }: EditCarModalProps) => {
                     />
                 </FieldGroup>
             </form>
-
-            {errorMessage && (
-                <div className="text-sm text-destructive mb-2">
-                    {errorMessage}
-                </div>
-            )}
 
             <DialogFooter>
                 <DialogClose asChild>
