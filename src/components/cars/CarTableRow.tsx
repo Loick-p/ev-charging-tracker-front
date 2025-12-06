@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 // Components
-import { EditCarModal } from "@/components/cars/EditCarModal.tsx"
+import { CarModal } from "@/components/cars/CarModal.tsx"
 import { DeleteModal } from "@/components/modals/DeleteModal.tsx"
 
 // UI
@@ -80,13 +80,11 @@ export const CarTableRow = ({ car }: CarTableRowProps) => {
                 </TableCell>
             </TableRow>
 
-            <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
-                <EditCarModal
-                    car={car}
-                    isOpen={editModalOpen}
-                    onClose={() => setEditModalOpen(false)}
-                />
-            </Dialog>
+            <CarModal
+                car={car}
+                open={editModalOpen}
+                onOpenChange={setEditModalOpen}
+            />
 
             <Dialog open={deleteModalOpen} onOpenChange={setDeleteModalOpen}>
                 <DeleteModal
