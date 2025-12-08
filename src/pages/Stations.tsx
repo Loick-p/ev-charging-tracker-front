@@ -144,7 +144,6 @@ export const Stations = () => {
                 <DeleteModal
                     title="Delete this station ?"
                     description="Are you sure you want to delete this station? This action cannot be undone."
-                    itemName="Home Charger"
                     onDelete={() => {
                         setDeleteModalOpen(false)
                     }}

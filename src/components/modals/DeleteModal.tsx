@@ -12,14 +12,14 @@ interface DeleteModalProps {
     title?: string
     description?: string
     onDelete?: () => void
-    deleteButtonText?: string
+    isLoading?: boolean
 }
 
 export const DeleteModal = ({
     title = "Are you sure ?",
     description = "This action cannot be undone. This will permanently delete the item and remove its data from our servers.",
     onDelete,
-    deleteButtonText = "Delete"
+    isLoading = false
 }: DeleteModalProps) => {
     return (
         <>
@@ -40,8 +40,9 @@ export const DeleteModal = ({
                         type="submit"
                         variant="destructive"
                         onClick={onDelete}
+                        disabled={isLoading}
                     >
-                        {deleteButtonText}
+                        {isLoading ? "Deleting..." : "Delete"}
                     </Button>
                 </DialogFooter>
             </DialogContent>
