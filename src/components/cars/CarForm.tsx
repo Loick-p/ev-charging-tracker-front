@@ -189,9 +189,10 @@ export const CarForm = ({ car, isEditMode, onSuccess, onSubmittingChange }: CarF
                                         id={field.name}
                                         name={field.name}
                                         value={field.state.value}
-                                        onChange={(e) => field.handleChange(parseInt(e.target.value))}
+                                        onChange={(e) => field.handleChange(parseFloat(e.target.value))}
                                         aria-invalid={isInvalid}
-                                        placeholder="78"
+                                        placeholder="78.8"
+                                        step="0.1"
                                     />
                                     <InputGroupAddon align="inline-end">
                                         <InputGroupText>kWh</InputGroupText>

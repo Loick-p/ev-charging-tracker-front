@@ -53,7 +53,6 @@ export const CarModal = ({ open, onOpenChange, car }: CarModalProps) => {
                     onSubmittingChange={setIsSubmitting}
                 />
 
-
                 <DialogFooter>
                     <DialogClose asChild>
                         <Button variant="outline" type="button">Cancel</Button>
