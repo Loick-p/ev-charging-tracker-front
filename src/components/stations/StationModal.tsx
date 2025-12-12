@@ -1,5 +1,8 @@
 import { useState } from "react"
 
+// Components
+import { StationForm } from "@/components/stations/StationForm.tsx"
+
 // UI
 import {
     Dialog,
@@ -43,6 +46,13 @@ export const StationModal = ({ open, onOpenChange, station }: StationModalProps)
                         }
                     </DialogDescription>
                 </DialogHeader>
+
+                <StationForm
+                    station={station}
+                    isEditMode={isEditMode}
+                    onSuccess={handleSuccess}
+                    onSubmittingChange={setIsSubmitting}
+                />
 
                 <DialogFooter>
                     <DialogClose asChild>
