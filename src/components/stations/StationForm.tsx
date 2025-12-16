@@ -1,62 +1,60 @@
 import { useEffect } from "react"
 
+// Types
+import { type Station, stationFormSchema } from "@/validations/station"
+
 // UI
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field.tsx"
 import { Input } from "@/components/ui/input.tsx"
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group.tsx"
 import { toast } from "sonner"
 
-// Types
-import { type Car, carFormSchema } from "@/validations/car"
-
 import { useForm } from "@tanstack/react-form"
-import { useCars } from "@/hooks/useCars.ts"
+import { useStations } from "@/hooks/useStations.ts"
 
-interface CarFormProps {
-    car?: Car | null
+interface StationFormProps {
+    station?: Station | null
     isEditMode: boolean
     onSuccess: () => void
     onSubmittingChange: (isSubmitting: boolean) => void
 }
 
-export const CarForm = ({ car, isEditMode, onSuccess, onSubmittingChange }: CarFormProps) => {
+export const StationForm = ({ station, isEditMode, onSuccess, onSubmittingChange }: StationFormProps) => {
     const {
-        createCar,
-        updateCar,
+        createStation,
+        updateStation,
         isCreating,
         isUpdating
-    } = useCars()
+    } = useStations()
     const isSubmitting = isCreating || isUpdating
-    
+
     const form = useForm({
         defaultValues: {
-            brand: car?.brand ?? '',
-            model: car?.model ?? '',
-            year: car?.year ?? 2025,
-            range: car?.range ?? 1,
-            batteryCapacity: car?.batteryCapacity ?? 1
+            name: station?.name ?? '',
+            outputPower: station?.outputPower ?? 1,
+            electricityPrice: station?.electricityPrice ?? 0.1,
         },
         validators: {
-            onSubmit: carFormSchema,
+            onSubmit: stationFormSchema,
         },
         onSubmit: async ({ value }) => {
             try {
                 if (isEditMode) {
-                    await updateCar(car!.id, value)
+                    await updateStation(station!.id, value)
                 } else {
                     // @ts-expect-error - temporary owner assignment
-                    await createCar({ ...value, owner: "api/users/1"})
+                    await createStation({ ...value, owner: "api/users/1"})
                 }
 
                 form.reset()
 
                 const action = isEditMode ? "updated" : "created"
-                toast.success(`Car has been ${action} successfully.`)
+                toast.success(`Station has been ${action} successfully.`)
 
                 onSuccess()
             } catch (error) {
                 const action = isEditMode ? "updating" : "creating"
-                toast.error(`An error occurred while ${action} the car. Please try again.`)
+                toast.error(`An error occurred while ${action} the station. Please try again.`)
 
                 console.log(error)
             }
@@ -69,7 +67,7 @@ export const CarForm = ({ car, isEditMode, onSuccess, onSubmittingChange }: CarF
 
     return (
         <form
-            id="car-form"
+            id="station-form"
             onSubmit={(e)=> {
                 e.preventDefault()
                 form.handleSubmit()
@@ -77,95 +75,50 @@ export const CarForm = ({ car, isEditMode, onSuccess, onSubmittingChange }: CarF
         >
             <FieldGroup className="gap-4">
                 <form.Field
-                    name="brand"
+                    name="name"
                     children={(field) => {
                         const isInvalid =
                             field.state.meta.isTouched && !field.state.meta.isValid
                         return (
                             <Field data-invalid={isInvalid}>
-                                <FieldLabel htmlFor={field.name}>Brand</FieldLabel>
+                                <FieldLabel htmlFor={field.name}>Name</FieldLabel>
                                 <Input
                                     id={field.name}
                                     name={field.name}
                                     value={field.state.value}
                                     onChange={(e) => field.handleChange(e.target.value)}
                                     aria-invalid={isInvalid}
-                                    placeholder="Tesla"
+                                    placeholder="Home charger"
                                 />
                                 {isInvalid && (
                                     <FieldError errors={field.state.meta.errors} />
                                 )}
                             </Field>
+
                         )
                     }}
                 />
                 <form.Field
-                    name="model"
+                    name="outputPower"
                     children={(field) => {
                         const isInvalid =
                             field.state.meta.isTouched && !field.state.meta.isValid
                         return (
                             <Field data-invalid={isInvalid}>
-                                <FieldLabel htmlFor={field.name}>Model</FieldLabel>
-                                <Input
-                                    id={field.name}
-                                    name={field.name}
-                                    value={field.state.value}
-                                    onChange={(e) => field.handleChange(e.target.value)}
-                                    aria-invalid={isInvalid}
-                                    placeholder="Model Y"
-                                />
-                                {isInvalid && (
-                                    <FieldError errors={field.state.meta.errors} />
-                                )}
-                            </Field>
-                        )
-                    }}
-                />
-                <form.Field
-                    name="year"
-                    children={(field) => {
-                        const isInvalid =
-                            field.state.meta.isTouched && !field.state.meta.isValid
-                        return (
-                            <Field data-invalid={isInvalid}>
-                                <FieldLabel htmlFor={field.name}>Year</FieldLabel>
-                                <Input
-                                    type="number"
-                                    id={field.name}
-                                    name={field.name}
-                                    value={field.state.value}
-                                    onChange={(e) => field.handleChange(parseInt(e.target.value))}
-                                    aria-invalid={isInvalid}
-                                    placeholder="2025"
-                                />
-                                {isInvalid && (
-                                    <FieldError errors={field.state.meta.errors} />
-                                )}
-                            </Field>
-                        )
-                    }}
-                />
-                <form.Field
-                    name="range"
-                    children={(field) => {
-                        const isInvalid =
-                            field.state.meta.isTouched && !field.state.meta.isValid
-                        return (
-                            <Field data-invalid={isInvalid}>
-                                <FieldLabel htmlFor={field.name}>Range</FieldLabel>
+                                <FieldLabel htmlFor={field.name}>Output power</FieldLabel>
                                 <InputGroup>
                                     <InputGroupInput
                                         type="number"
                                         id={field.name}
                                         name={field.name}
                                         value={field.state.value}
-                                        onChange={(e) => field.handleChange(parseInt(e.target.value))}
+                                        onChange={(e) => field.handleChange(parseFloat(e.target.value))}
                                         aria-invalid={isInvalid}
-                                        placeholder="545"
+                                        placeholder="11"
+                                        step="0.1"
                                     />
                                     <InputGroupAddon align="inline-end">
-                                        <InputGroupText>km</InputGroupText>
+                                        <InputGroupText>kW</InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>
                                 {isInvalid && (
@@ -176,13 +129,13 @@ export const CarForm = ({ car, isEditMode, onSuccess, onSubmittingChange }: CarF
                     }}
                 />
                 <form.Field
-                    name="batteryCapacity"
+                    name="electricityPrice"
                     children={(field) => {
                         const isInvalid =
                             field.state.meta.isTouched && !field.state.meta.isValid
                         return (
                             <Field data-invalid={isInvalid}>
-                                <FieldLabel htmlFor={field.name}>Battery capacity</FieldLabel>
+                                <FieldLabel htmlFor={field.name}>Electricity price</FieldLabel>
                                 <InputGroup>
                                     <InputGroupInput
                                         type="number"
@@ -191,11 +144,11 @@ export const CarForm = ({ car, isEditMode, onSuccess, onSubmittingChange }: CarF
                                         value={field.state.value}
                                         onChange={(e) => field.handleChange(parseFloat(e.target.value))}
                                         aria-invalid={isInvalid}
-                                        placeholder="78.8"
-                                        step="0.1"
+                                        placeholder="0.25"
+                                        step="0.01"
                                     />
                                     <InputGroupAddon align="inline-end">
-                                        <InputGroupText>kWh</InputGroupText>
+                                        <InputGroupText>€/kWh</InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>
                                 {isInvalid && (
