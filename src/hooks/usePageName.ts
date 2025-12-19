@@ -1,35 +1,35 @@
-import { useLocation } from 'react-router'
+import { useLocation } from "react-router";
 
 interface PageNameMap {
-    [key: string]: string;
+	[key: string]: string;
 }
 
 const pageNames: PageNameMap = {
-    '/': 'Dashboard',
-    '/chargings': 'Chargings',
-    '/cars': 'Cars',
-    '/stations': 'Stations',
+	"/": "Dashboard",
+	"/chargings": "Chargings",
+	"/cars": "Cars",
+	"/stations": "Stations",
 };
 
 const findPageName = (pathname: string): string => {
-    if (pageNames[pathname]) {
-        return pageNames[pathname];
-    }
+	if (pageNames[pathname]) {
+		return pageNames[pathname];
+	}
 
-    const pathSegments = pathname.split('/').filter(segment => segment !== '');
-    let currentPath = '';
-    for (const segment of pathSegments) {
-        currentPath += `/${segment}`;
-        if (pageNames[currentPath]) {
-            return pageNames[currentPath];
-        }
-    }
+	const pathSegments = pathname.split("/").filter((segment) => segment !== "");
+	let currentPath = "";
+	for (const segment of pathSegments) {
+		currentPath += `/${segment}`;
+		if (pageNames[currentPath]) {
+			return pageNames[currentPath];
+		}
+	}
 
-    return 'Dashboard';
+	return "Dashboard";
 };
 
 export const usePageName = (): string => {
-    const location = useLocation();
+	const location = useLocation();
 
-    return findPageName(location.pathname);
+	return findPageName(location.pathname);
 };
